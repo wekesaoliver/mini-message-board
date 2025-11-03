@@ -1,0 +1,17 @@
+<html>
+    <title>New Message</title>
+    <body>
+        <h1>New Message</h1>
+        <form action="/new" method="POST">
+            <label for="messageUser">Author Name:</label>
+            <input type="text" id="messageUser" name="messageUser" required>
+            <br><br>
+            <label for="messageText">Message:</label>
+            <textarea id="messageText" name="messageText" required></textarea>
+            <br><br>
+            <button type="submit">Submit</button>
+        </form>
+        <br>
+        <a href="/">Back to home</a>
+    </body>
+</html>

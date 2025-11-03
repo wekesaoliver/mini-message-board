@@ -1,0 +1,14 @@
+<html>
+    <head><title>Message Details</title></head>
+    <body>
+        <h1>Message Details</h1>
+        <div>
+            <h2>From: <%= message.user %> </h2>
+            <p><%= message.text %> </p>
+            <p><em>Posted: <%= message.added.toLocaleString() %> </em></p>
+        </div>
+        <br>
+        <a href="/">Back to home</a>
+    </body>
+
+</html>
