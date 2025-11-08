@@ -16,7 +16,7 @@ async function getMessageById(id) {
 
 async function insertMessage(user, text) {
     const { rows } = await pool.query(
-        "INSERT INTO messages (user, text, added) VALUES ($1, $2, NOW()) RETURNING *",
+        'INSERT INTO messages ("user", text, added) VALUES ($1, $2, NOW()) RETURNING *',
         [user, text]
     );
     return rows[0];

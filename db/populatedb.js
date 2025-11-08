@@ -5,17 +5,17 @@ require("dotenv").config();
 const { Client } = require("pg");
 
 const SQL = `
-CREATE TABLE IF NOT EXISTS message (
+CREATE TABLE IF NOT EXISTS messages (
 id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-user VARCHAR (255) NOT NULL,
+"user" VARCHAR (255) NOT NULL,
 text TEXT NOT NULL,
 added TIMESTAMP DEFAULT NOW()
-)
+);
 
-INSERT INTO message (user, text, added)
+INSERT INTO messages ("user", text, added)
 VALUES
-("Oliver", "Hello there!", NOW()),
-("Charles", "Hello world!", NOW())
+('Oliver', 'Hello there!', NOW()),
+('Charles', 'Hello world!', NOW())
 ON CONFLICT DO NOTHING;
 `;
 
@@ -36,7 +36,7 @@ async function main() {
 
     try {
         await client.connect();
-        await client.querys(SQL);
+        await client.query(SQL);
         console.log("done");
     } catch (error) {
         console.error("Error seeding database:", error);
