@@ -6,7 +6,10 @@ const { Pool } = require("pg");
 const poolConfig = process.env.DATABASE_URL
     ? {
           connectionString: process.env.DATABASE_URL,
-          ssl: process.env.NODE_ENV === "production" ? { rejectUnauthorized: false } : false,
+          // Enable SSL for production/cloud databases (Railway, Heroku, etc.)
+          ssl: process.env.NODE_ENV === "production" || process.env.DATABASE_URL.includes('railway') || process.env.DATABASE_URL.includes('heroku')
+              ? { rejectUnauthorized: false }
+              : false,
       }
     : {
           host: process.env.DB_HOST,

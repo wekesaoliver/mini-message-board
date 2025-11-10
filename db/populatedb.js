@@ -22,24 +22,35 @@ ON CONFLICT DO NOTHING;
 async function main() {
     console.log("seeding...");
 
-    const connectionString = process.argv[2];
+    // Priority: command line arg > DATABASE_URL > individual env vars
+    const connectionString = process.argv[2] || process.env.DATABASE_URL;
 
-    const client = connectionString
-        ? new Client({ connectionString })
-        : new Client({
+    const clientConfig = connectionString
+        ? {
+              connectionString: connectionString,
+              // Enable SSL for production/cloud databases (Railway, Heroku, etc.)
+              ssl: process.env.NODE_ENV === "production" || connectionString.includes('railway') || connectionString.includes('heroku')
+                  ? { rejectUnauthorized: false }
+                  : false,
+          }
+        : {
               host: process.env.DB_HOST,
               user: process.env.DB_USER,
               database: process.env.DB_NAME,
               password: process.env.DB_PASSWORD,
               port: process.env.DB_PORT,
-          });
+          };
+
+    const client = new Client(clientConfig);
 
     try {
         await client.connect();
+        console.log("Connected to database");
         await client.query(SQL);
-        console.log("done");
+        console.log("Database seeded successfully!");
     } catch (error) {
         console.error("Error seeding database:", error);
+        process.exit(1);
     } finally {
         await client.end();
     }
